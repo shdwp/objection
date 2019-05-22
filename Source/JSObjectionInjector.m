@@ -77,6 +77,35 @@
     return [self getObjectWithArgs:classOrProtocol, nil];
 }
 
+- (void)invalidateObject:(id)classOrProtocol {
+    [self invalidateObject:classOrProtocol named:nil];
+}
+
+- (void)invalidateObject:(id)classOrProtocol named:(NSString *)name {
+    @synchronized(self) {
+        NSString *key = nil;
+        BOOL isClass = class_isMetaClass(object_getClass(classOrProtocol));
+        
+        if (isClass) {
+            key = NSStringFromClass(classOrProtocol);
+        } else {
+            key = [NSString stringWithFormat:@"<%@>", NSStringFromProtocol(classOrProtocol)];
+        }
+        
+        if (name)
+        {
+            key = [NSString stringWithFormat:@"%@:%@",key,name];
+        }
+        
+        id<JSObjectionEntry> injectorEntry = [_context objectForKey:key];
+        injectorEntry.injector = self;
+
+        if (classOrProtocol && injectorEntry) {
+            [injectorEntry invalidate];
+        }
+    }
+}
+
 - (id)getObject:(id)classOrProtocol named:(NSString*)name {
     return [self getObject:classOrProtocol namedWithArgs:name, nil];
 }

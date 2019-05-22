@@ -1,14 +1,6 @@
 #import <Foundation/Foundation.h>
 #import "JSObjectionModule.h"
 
-@protocol JSObjectionInjectorSelectors
-
-@optional
-+ (NSSet *)objectionRequires;
-+ (NSDictionary *)objectionRequiresNames;
-
-@end
-
 @interface JSObjectionInjector : NSObject 
 
 - (instancetype)initWithContext:(NSDictionary *)theGlobalContext;
@@ -24,6 +16,8 @@
 - (id)getObject:(id)classOrProtocol initializer:(SEL)selector argumentList:(NSArray *)argumentList;
 - (id)getObject:(id)classOrProtocol named:(NSString*)name argumentList:(NSArray *)argumentList;
 - (id)getObject:(id)classOrProtocol named:(NSString*)name initializer:(SEL)selector argumentList:(NSArray *)argumentList;
+- (void)invalidateObject:(id)classOrProtocol;
+- (void)invalidateObject:(id)classOrProtocol named:(NSString *)name;
 - (id)withModule:(JSObjectionModule *)theModule;
 - (id)withModules:(JSObjectionModule *)first, ... NS_REQUIRES_NIL_TERMINATION;
 - (id)withModuleCollection:(NSArray *)theModules;

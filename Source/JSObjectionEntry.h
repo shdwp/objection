@@ -19,6 +19,7 @@ typedef enum {
 + (id)entryWithEntry:(JSObjectionEntry *)entry;
 @optional
 -(id) extractObject:(NSArray *)arguments initializer: (SEL)initializer;
+-(void)invalidate;
 
 @end
 

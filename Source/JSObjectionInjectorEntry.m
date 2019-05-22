@@ -44,6 +44,10 @@
     return [self extractObject:arguments initializer:nil];
 }
 
+- (void)invalidate {
+    _storageCache = nil;
+}
+
 - (void)dealloc  {
    _storageCache = nil;
 }
@@ -68,16 +72,15 @@
     }
     
     JSObjectionUtils.injectDependenciesIntoProperties(self.injector, self.classEntry, objectUnderConstruction);
-    
     return objectUnderConstruction;
 }
 
 - (SEL)initializerForObject {
-    return NSSelectorFromString([[self.classEntry objectionInitializer] objectForKey:JSObjectionInitializerKey]);
+    return NSSelectorFromString([[self.classEntry performSelector:@selector(objectionInitializer)] objectForKey:JSObjectionInitializerKey]);
 }
 
 - (NSArray *)argumentsForObject:(NSArray *)givenArguments {
-    return givenArguments.count > 0 ? givenArguments : [[self.classEntry objectionInitializer] objectForKey:JSObjectionDefaultArgumentsKey];
+    return givenArguments.count > 0 ? givenArguments : [[self.classEntry performSelector:@selector(objectionInitializer)] objectForKey:JSObjectionDefaultArgumentsKey];
 }
 
 

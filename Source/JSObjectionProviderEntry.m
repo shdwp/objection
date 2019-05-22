@@ -40,6 +40,10 @@
     return _storageCache;
 }
 
+- (void)invalidate {
+    _storageCache = nil;
+}
+
 - (void)dealloc {
     _storageCache = nil;
 }
@@ -55,6 +59,7 @@
     if (self.lifeCycle == JSObjectionScopeSingleton) {
         _storageCache = objectUnderConstruction;
     }
+    
     return objectUnderConstruction;
 }
 
